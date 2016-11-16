@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import Queue
-
+import json
 
 class Queuer(object):
 
@@ -13,17 +13,20 @@ class Queuer(object):
 
     def next_unvisited(self):
         if not self.unvisited.empty():
-            next = self.unvisited.get()
-            return next
+            return self.unvisited.get()
 
-    def add(self, page_links, current_url):
-        self.visited.append(current_url)
+    def add(self, next_page_links, current_url, image_assets):
+        current_page_data = {
+            'url': current_url,
+            'assets': image_assets
+        }
+        self.visited.append(current_page_data)
 
-        for link in page_links:
+        for link in next_page_links:
             if link not in self.unvisited.queue and link not in self.visited:
                 self.unvisited.put(link)
 
-        print current_url \
+        print json.dumps(current_page_data, indent=2) \
             + ' Unvisited: ' + str(self.unvisited.qsize()) \
             + ' Visited: ' + str(len(self.visited))
 

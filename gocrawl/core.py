@@ -6,7 +6,7 @@ import request
 
 
 def main():
-    entry_point = "http://bbc.co.uk"
+    entry_point = "http://wikipedia.org"
 
     # Initiate with a first link
     queuer = Queuer(entry_point)
@@ -17,11 +17,11 @@ def main():
         if current_url is None:
             break
         try:
-            page_links = crawl(current_url)
+            page_links, image_assets = crawl(current_url)
         except Exception, e:
             queuer.add_unvalid(current_url)
             continue
-        queuer.add(page_links, current_url)
+        queuer.add(page_links, current_url, image_assets)
 
     print 'done'
     # report(queuer.visited_links())
@@ -29,10 +29,10 @@ def main():
 
 def crawl(url):
     # Request the page
-    page = request.stringified_page(url.strip())
-    print page
+    p = request.stringified_page(url.strip())
+
     # Get normalized links
-    return Parser(url).links_from_page(page)
+    return Parser(url).links_from_page(p)
 
 
 if __name__ == "__main__":
