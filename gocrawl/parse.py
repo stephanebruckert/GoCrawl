@@ -24,10 +24,12 @@ class Parser(object):
         pages = element.find_all('a', href=True)
         images = element.find_all('img', src=True)
         js = element.find_all('script', src=True)
+        css = element.find_all('link', type="text/css")
 
         return (self.filter(pages, 'href'),
                 self.filter(images, 'src'),
-                self.filter(js, 'src'))
+                self.filter(js, 'src'),
+                self.filter(css, 'href'))
 
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]

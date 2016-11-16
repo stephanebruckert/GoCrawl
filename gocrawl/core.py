@@ -6,7 +6,7 @@ import request
 
 
 def main():
-    entry_point = "http://wikipedia.org"
+    entry_point = "https://docs.python.org/3/library/mimetypes.html"
 
     # Initiate with a first link
     queuer = Queuer(entry_point)
@@ -17,11 +17,13 @@ def main():
         if current_url is None:
             break
         try:
-            page_links, image_assets, js_assets = crawl(current_url)
+            (page_links, image_assets, js_assets,
+                css_assets) = crawl(current_url)
         except Exception, e:
             queuer.add_unvalid(current_url)
             continue
-        queuer.add(page_links, current_url, image_assets, js_assets)
+        queuer.add(page_links, current_url,
+                   image_assets, js_assets, css_assets)
 
     print 'done'
     # report(queuer.visited_links())

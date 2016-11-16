@@ -3,6 +3,7 @@
 import Queue
 import json
 
+
 class Queuer(object):
 
     def __init__(self, entry_point):
@@ -15,12 +16,14 @@ class Queuer(object):
         if not self.unvisited.empty():
             return self.unvisited.get()
 
-    def add(self, next_page_links, current_url, image_assets, js_assets):
+    def add(self, next_page_links, current_url, image_assets, js_assets,
+            css_assets):
         current_page_data = {
             'url': current_url,
             'assets': {
                 'images': image_assets,
-                'js': js_assets
+                'js': js_assets,
+                'css': css_assets
             }
         }
         self.visited.append(current_page_data)
