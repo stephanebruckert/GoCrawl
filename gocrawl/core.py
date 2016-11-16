@@ -3,10 +3,11 @@
 from queuer import Queuer
 from parse import Parser
 import request
+import report
 
 
 def main():
-    entry_point = "https://docs.python.org/3/library/mimetypes.html"
+    entry_point = "http://gocardless.com/"
 
     # Initiate with a first link
     queuer = Queuer(entry_point)
@@ -20,13 +21,14 @@ def main():
             (page_links, image_assets, js_assets,
                 css_assets) = crawl(current_url)
         except Exception, e:
-            queuer.add_unvalid(current_url)
+            queuer.add_invalid(current_url)
             continue
         queuer.add(page_links, current_url,
                    image_assets, js_assets, css_assets)
 
     print 'done'
-    # report(queuer.visited_links())
+    report.output_json(queuer.results)
+    # TODO Save results in filter
 
 
 def crawl(url):

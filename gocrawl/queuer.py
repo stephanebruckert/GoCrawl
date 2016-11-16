@@ -11,6 +11,7 @@ class Queuer(object):
         self.unvisited.put(entry_point.decode('utf-8'))
         self.visited = []
         self.invalid = []
+        self.results = []
 
     def next_unvisited(self):
         if not self.unvisited.empty():
@@ -26,13 +27,14 @@ class Queuer(object):
                 'css': css_assets
             }
         }
-        self.visited.append(current_page_data)
+        self.results.append(current_page_data)
+        self.visited.append(current_url)
 
         for link in next_page_links:
             if link not in self.unvisited.queue and link not in self.visited:
                 self.unvisited.put(link)
 
-        print json.dumps(current_page_data, indent=2) \
+        print current_url.decode('utf-8') \
             + ' Unvisited: ' + str(self.unvisited.qsize()) \
             + ' Visited: ' + str(len(self.visited))
 
