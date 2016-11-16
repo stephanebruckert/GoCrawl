@@ -33,6 +33,7 @@ class Parser(object):
 
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]
+        hrefs = list(set(hrefs))  # Remove duplicates
         return filter(lambda href: href is not None, hrefs)
 
     '''
@@ -46,10 +47,5 @@ class Parser(object):
 
     def is_href_acceptable(self, href):
         return (len(href) > 0 and
-                href[0] != '#' and not
+                href[0] != '#' and not  # TODO we need to remove anchors
                 href.startswith("mailto"))
-
-    # def normalize_source(self, href):
-    #     normalized_href = urlparse.urljoin(self.url, href)
-    #     if (self.domain_name in normalized_href):
-    #         return normalized_href

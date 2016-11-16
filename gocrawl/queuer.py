@@ -10,7 +10,7 @@ class Queuer(object):
         self.unvisited = Queue.Queue()
         self.unvisited.put(entry_point.decode('utf-8'))
         self.visited = []
-        self.unvalid = []
+        self.invalid = []
 
     def next_unvisited(self):
         if not self.unvisited.empty():
@@ -36,15 +36,5 @@ class Queuer(object):
             + ' Unvisited: ' + str(self.unvisited.qsize()) \
             + ' Visited: ' + str(len(self.visited))
 
-        # - Will divide them in 2 categories
-        #   - other pages
-        #   - assets (and associate them with the current page)
-        # - Add them to lists
-        #   - Check if not already visited or not already queued, otherwise
-        #           add to queue)
-        # - Create a visited_page object, add its assets
-        # - Remove from queue
-        # - Add to visited list
-
-    def add_unvalid(self, unvalid_url):
-        self.unvalid.append(unvalid_url)
+    def add_invalid(self, invalid_url):
+        self.invalid.append(invalid_url)
