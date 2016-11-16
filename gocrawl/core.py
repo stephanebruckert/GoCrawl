@@ -17,11 +17,11 @@ def main():
         if current_url is None:
             break
         try:
-            page_links, image_assets = crawl(current_url)
+            page_links, image_assets, js_assets = crawl(current_url)
         except Exception, e:
             queuer.add_unvalid(current_url)
             continue
-        queuer.add(page_links, current_url, image_assets)
+        queuer.add(page_links, current_url, image_assets, js_assets)
 
     print 'done'
     # report(queuer.visited_links())
@@ -32,7 +32,7 @@ def crawl(url):
     p = request.stringified_page(url.strip())
 
     # Get normalized links
-    return Parser(url).links_from_page(p)
+    return Parser(url).search(p)
 
 
 if __name__ == "__main__":

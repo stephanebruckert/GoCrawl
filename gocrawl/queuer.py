@@ -15,10 +15,13 @@ class Queuer(object):
         if not self.unvisited.empty():
             return self.unvisited.get()
 
-    def add(self, next_page_links, current_url, image_assets):
+    def add(self, next_page_links, current_url, image_assets, js_assets):
         current_page_data = {
             'url': current_url,
-            'assets': image_assets
+            'assets': {
+                'images': image_assets,
+                'js': js_assets
+            }
         }
         self.visited.append(current_page_data)
 

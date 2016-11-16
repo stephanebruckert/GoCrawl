@@ -17,12 +17,17 @@ class Parser(object):
     '''
     Retrieving any links to pages of the same domain
     '''
-    def links_from_page(self, page_str):
+    def search(self, page_str):
         element = BeautifulSoup(page_str, 'html.parser')
-        all_links = element.find_all('a', href=True)
-        img_links = element.find_all('img', src=True)
-        return (self.filter(all_links, 'href'),
-                self.filter(img_links, 'src'))
+
+        # create rules
+        pages = element.find_all('a', href=True)
+        images = element.find_all('img', src=True)
+        js = element.find_all('script', src=True)
+
+        return (self.filter(pages, 'href'),
+                self.filter(images, 'src'),
+                self.filter(js, 'src'))
 
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]
