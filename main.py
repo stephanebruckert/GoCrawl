@@ -6,7 +6,7 @@ import lib.request
 
 
 def main():
-    entry_point = "http://wikipedia.org"
+    entry_point = "http://wikipedia.org/"
 
     # Initiate with a first link
     queuer = Queuer(entry_point)
@@ -16,18 +16,20 @@ def main():
         current_url = queuer.next_unvisited()
         if current_url is None:
             break
-        page_links = crawl(current_url)
-
-        # Pass all links to the queue
+        try:
+            page_links = crawl(current_url)
+        except Exception, e:
+            queuer.add_unvalid(current_url)
+            continue
         queuer.add(page_links, current_url)
 
-    report(queuer.visited_links())
+    print 'done'
+    # report(queuer.visited_links())
 
 
 def crawl(url):
     # Request the page
-    page = lib.request.stringified_page(url)
-
+    page = lib.request.stringified_page(url.strip())
     # Get normalized links
     return Parser(url).links_from_page(page)
 

@@ -9,6 +9,7 @@ class Queuer(object):
         self.unvisited = Queue.Queue()
         self.unvisited.put(entry_point.decode('utf-8'))
         self.visited = []
+        self.unvalid = []
 
     def next_unvisited(self):
         if not self.unvisited.empty():
@@ -35,3 +36,6 @@ class Queuer(object):
         # - Create a visited_page object, add its assets
         # - Remove from queue
         # - Add to visited list
+
+    def add_unvalid(self, unvalid_url):
+        self.unvalid.append(unvalid_url)

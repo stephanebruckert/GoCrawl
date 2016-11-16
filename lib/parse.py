@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 import urlparse
+from pprint import pprint
 
 
 class Parser(object):
@@ -14,8 +15,8 @@ class Parser(object):
         cls.domain_name = urlparse.urlparse(entry_point).hostname
 
     def links_from_page(self, page_str):
-        soup = BeautifulSoup(page_str, 'html.parser')
-        all_links = soup.find_all('a', href=True)
+        element = BeautifulSoup(page_str, 'html.parser')
+        all_links = element.find_all('a', href=True)
         return self.get_hrefs(all_links)
 
     def get_hrefs(self, links):
