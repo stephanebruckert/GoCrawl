@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from lib.queuer import Queuer
-from lib.parse import Parser
-import lib.request
+from queuer import Queuer
+from parse import Parser
+import request
 
 
 def main():
-    entry_point = "http://wikipedia.org/"
+    entry_point = "http://bbc.co.uk"
 
     # Initiate with a first link
     queuer = Queuer(entry_point)
@@ -29,7 +29,8 @@ def main():
 
 def crawl(url):
     # Request the page
-    page = lib.request.stringified_page(url.strip())
+    page = request.stringified_page(url.strip())
+    print page
     # Get normalized links
     return Parser(url).links_from_page(page)
 
