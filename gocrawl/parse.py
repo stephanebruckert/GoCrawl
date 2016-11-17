@@ -45,7 +45,7 @@ class Parser(object):
             if (self.domain_name in normalized_href):
                 return normalized_href
 
-    def is_href_acceptable(self, href):
+    def is_href_acceptable(self, href):  # self looks useless
         return (len(href) > 0 and
                 href[0] != '#' and not  # TODO we need to remove anchors
                 href.startswith("mailto"))

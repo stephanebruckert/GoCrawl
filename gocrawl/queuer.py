@@ -6,6 +6,8 @@ import json
 
 class Queuer(object):
 
+    # TODO current_url should be instance attribute
+    # TODO all lists should be class attributes
     def __init__(self, entry_point):
         self.unvisited = Queue.Queue()
         self.unvisited.put(entry_point.decode('utf-8'))
@@ -34,7 +36,10 @@ class Queuer(object):
             if link not in self.unvisited.queue and link not in self.visited:
                 self.unvisited.put(link)
 
-        print current_url.decode('utf-8') \
+        self.print_status(current_url)
+
+    def print_status(self, current_url):
+        print current_url \
             + ' Unvisited: ' + str(self.unvisited.qsize()) \
             + ' Visited: ' + str(len(self.visited))
 

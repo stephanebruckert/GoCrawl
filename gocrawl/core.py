@@ -6,9 +6,7 @@ import request
 import report
 
 
-def main():
-    entry_point = "http://gocardless.com/"
-
+def core(entry_point):
     # Initiate with a first link
     queuer = Queuer(entry_point)
     Parser.set_domain_name(entry_point)
@@ -26,9 +24,9 @@ def main():
         queuer.add(page_links, current_url,
                    image_assets, js_assets, css_assets)
 
-    print 'done'
+    print 'Done.'
     report.output_json(queuer.results)
-    # TODO Save results in filter
+    # TODO Save results in file
 
 
 def crawl(url):
@@ -37,7 +35,3 @@ def crawl(url):
 
     # Get normalized links
     return Parser(url).search(p)
-
-
-if __name__ == "__main__":
-    main()
