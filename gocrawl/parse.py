@@ -2,7 +2,6 @@
 
 from bs4 import BeautifulSoup
 import urlparse
-from pprint import pprint
 
 
 class Parser(object):
@@ -33,7 +32,7 @@ class Parser(object):
 
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]
-        hrefs = list(set(hrefs))  # Remove duplicates
+        hrefs = list(set(hrefs))  # remove duplicates
         return filter(lambda href: href is not None, hrefs)
 
     '''
@@ -43,11 +42,15 @@ class Parser(object):
         accepted_href = self.useful_href(href)
         if accepted_href:
             normalized_href = urlparse.urljoin(self.url, accepted_href)
-            if (self.domain_name in normalized_href):
+
+            # Handle case where google.com/mydomain.com
+            uri_object = urlparse.urlparse(normalized_href)
+            domain = '{uri.scheme}://{uri.netloc}/'.format(uri=uri_object)
+            if (self.domain_name in domain):
                 return normalized_href
 
     '''
-    href can be useful, modified to be useful or lost cause
+    href can be useful, modified to be useful, or lost cause
     '''
     @staticmethod
     def useful_href(href):
@@ -60,3 +63,5 @@ class Parser(object):
                 return href
         else:
             False
+
+# class WebPage(object):
