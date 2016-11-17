@@ -5,7 +5,7 @@ from gocrawl.parse import Parser
 import unittest
 
 
-class IsHrefAcceptableTestSuite(unittest.TestCase):
+class UsefulHrefTestSuite(unittest.TestCase):
     """Basic test cases."""
 
     def setUp(self):
@@ -14,21 +14,29 @@ class IsHrefAcceptableTestSuite(unittest.TestCase):
     def tearDown(self):
         del self.parser
 
-    def test_valid_href_returns_true(self):
+    def test_returns_true(self):
         self.assertTrue(
-            self.parser.is_href_acceptable("hello"))
+            Parser.useful_href("hello"))
 
-    def test_is_href_acceptable_returns_false_when_starts_with_hashtag(self):
+    def test_starts_with_hash_returns_false(self):
         self.assertFalse(
-            self.parser.is_href_acceptable("#hello"))
+            Parser.useful_href("#hello"))
 
-    def test_is_href_acceptable_returns_false_when_empty_string(self):
+    def test_remove_hash(self):
         self.assertFalse(
-            self.parser.is_href_acceptable(""))
+            Parser.useful_href("hello#"))
 
-    def test_is_href_acceptable_returns_false_when_mailto(self):
+    def test_remove_after_hash(self):
+        self.assertEquals(
+            Parser.useful_href("hello#world"), "hello")
+
+    def test_single_hash_returns_false(self):
         self.assertFalse(
-            self.parser.is_href_acceptable("mailto:mail@to.com"))
+            Parser.useful_href("#"))
+
+    def test_mail_returns_false(self):
+        self.assertFalse(
+            Parser.useful_href("mailto:mail@to.com"))
 
 if __name__ == '__main__':
     unittest.main()

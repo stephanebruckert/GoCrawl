@@ -40,12 +40,23 @@ class Parser(object):
     Normalize urls and keep only those from the current domain
     '''
     def normalize_href(self, href):
-        if self.is_href_acceptable(href):
-            normalized_href = urlparse.urljoin(self.url, href)
+        accepted_href = self.useful_href(href)
+        if accepted_href:
+            normalized_href = urlparse.urljoin(self.url, accepted_href)
             if (self.domain_name in normalized_href):
                 return normalized_href
 
-    def is_href_acceptable(self, href):  # self looks useless
-        return (len(href) > 0 and
-                href[0] != '#' and not  # TODO we need to remove anchors
-                href.startswith("mailto"))
+    '''
+    href can be useful, modified to be useful or lost cause
+    '''
+    @staticmethod
+    def useful_href(href):
+        if (len(href) > 0 and
+                href[0] != '#' and not
+                href.startswith("mailto")):
+            try:
+                return href[:href.index('#')]  # remove the URL anchor
+            except ValueError, e:
+                return href
+        else:
+            False
