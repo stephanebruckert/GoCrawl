@@ -1,8 +1,18 @@
 ### install
 
+
+#### 1. software needed
+
+    easy_install pip
     pip install --upgrade pip
     pip install virtualenv
+
+#### 2. prerequisites
+
+    virtualenv env
     pip install -r ./requirements.txt
+
+#### 3. run
     python main.py
 
 ### options

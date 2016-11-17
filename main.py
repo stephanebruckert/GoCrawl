@@ -1,6 +1,17 @@
 #!/usr/bin/python
 
+import argparse
 from gocrawl.core import core
 
 if __name__ == "__main__":
-    core("http://gocardless.com")
+    parser = argparse.ArgumentParser(description="What and how to parse")
+
+    parser.add_argument('-L', '--link', type=str, required=True,
+                        help='Entry point URL')
+    parser.add_argument('-S', '--speed', type=int, required=False,
+                        help='Time in seconds between each request')
+    parser.add_argument('-P', '--print',
+                        help='Prints the progression')
+
+    args = parser.parse_args()
+    core(args.link)

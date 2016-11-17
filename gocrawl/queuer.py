@@ -15,12 +15,18 @@ class Queuer(object):
         self.invalid = []
         self.results = []
 
+    '''
+    The next page to visit in the waiting list
+    '''
     def next_unvisited(self):
         if not self.unvisited.empty():
             return self.unvisited.get()
 
-    def add(self, next_page_links, current_url, image_assets, js_assets,
-            css_assets):
+    '''
+    Populate a visited page with its assets,
+    adds linked pages to waiting list,
+    '''
+    def add(self, results, current_url):
         current_page_data = {
             'url': current_url,
             'assets': {
@@ -38,10 +44,16 @@ class Queuer(object):
 
         self.print_status(current_url)
 
+    '''
+    Save a list of corrupt pages
+    '''
+    def add_invalid(self, invalid_url):
+        self.invalid.append(invalid_url)
+
+    '''
+    Status after visiting current page
+    '''
     def print_status(self, current_url):
         print current_url \
             + ' Unvisited: ' + str(self.unvisited.qsize()) \
             + ' Visited: ' + str(len(self.visited))
-
-    def add_invalid(self, invalid_url):
-        self.invalid.append(invalid_url)
