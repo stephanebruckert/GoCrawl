@@ -20,8 +20,7 @@ def core(entry_point):
         if current_url is None:
             break
         try:
-            (page_links, image_assets, js_assets,
-                css_assets) = read_page(current_url)
+            results = read_page(current_url)
         except Exception, e:
             queuer.add_invalid(current_url)
             continue

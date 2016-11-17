@@ -29,16 +29,12 @@ class Queuer(object):
     def add(self, results, current_url):
         current_page_data = {
             'url': current_url,
-            'assets': {
-                'images': image_assets,
-                'js': js_assets,
-                'css': css_assets
-            }
+            'assets': [results['assets'][asset] for asset in results['assets']]
         }
         self.results.append(current_page_data)
         self.visited.append(current_url)
 
-        for link in next_page_links:
+        for link in results['next']['url']:
             if link not in self.unvisited.queue and link not in self.visited:
                 self.unvisited.put(link)
 

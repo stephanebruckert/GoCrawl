@@ -6,21 +6,14 @@ import urlparse
 
 class Parser(object):
     to_search = {
-                    'url': [
-                        ['a', 'href', True],
-                        ['link', 'href', True]
-                    ],
-                    'images': [
-                        ['img', 'src', True]
-                    ],
-                    'css': [
-                        ['link', 'type', 'text/css'],
-                        ['link', 'rel', 'stylesheet']
-                    ],
-                    'js': [
-                        ['script', 'src', True],
-                        ['script', 'type', 'text/javascript']
-                    ]
+                    'next': {
+                        'url':    [['a', 'href']]
+                    },
+                    'assets': {
+                        'images': [['img', 'src']],
+                        'css':    [['link', 'href']],
+                        'js':     [['script', 'src']]
+                    }
                 }
 
     def __init__(self, current_url):
@@ -40,15 +33,13 @@ class Parser(object):
         element = BeautifulSoup(page_str, 'html.parser')
 
         results = {}
-        print self.to_search
-        for el_type in self.to_search:
-            results[el_type] = []
-            print el_type
-            for rule in self.to_search[el_type]:
-                print rule
-                result = element.find_all(rule[0], **{rule[1]: rule[2]})
-                result = self.filter(result, rule[1])
-                results[el_type] += result
+        for cat in self.to_search:
+            results[cat] = {}
+            for el_type in self.to_search[cat]:
+                results[cat][el_type] = []
+                for rule in self.to_search[cat][el_type]:
+                    result = element.find_all(rule[0], **{rule[1]: True})
+                    results[cat][el_type].extend(self.filter(result, rule[1]))
         return results
 
     '''
@@ -56,8 +47,8 @@ class Parser(object):
     '''
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]
-        hrefs = list(set(hrefs))  # removes duplicates
-        return filter(lambda href: href is not None, hrefs)
+        hrefs_without_duplicates = list(set(hrefs))
+        return filter(lambda href: href is not None, hrefs_without_duplicates)
 
     '''
     Normalize urls and keep only those from the current domain
@@ -66,7 +57,6 @@ class Parser(object):
         accepted_href = self.useful_href(href)
         if accepted_href:
             normalized_href = urlparse.urljoin(self.url, accepted_href)
-
             # exclude google.com/domain-i-am-crawling.com
             uri_object = urlparse.urlparse(normalized_href)
             domain = '{uri.scheme}://{uri.netloc}/'.format(uri=uri_object)
