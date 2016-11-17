@@ -48,6 +48,11 @@ class NormalizeHrefTestSuite(unittest.TestCase):
             self.parser.normalize_href("http://wikipedia.org/"),
             "http://wikipedia.org/")
 
+    def test_returns_true_when_subdomain(self):
+        self.assertEquals(
+            self.parser.normalize_href("http://fr.wikipedia.org/"),
+            "http://fr.wikipedia.org/")
+
     def test_wrong_domain_returns_false(self):
         self.assertFalse(
             self.parser.normalize_href("http://google.com"))

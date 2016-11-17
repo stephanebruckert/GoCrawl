@@ -9,6 +9,9 @@ class Parser(object):
     def __init__(self, current_url):
         self.url = current_url
 
+    '''
+    The parser needs to know which domain to refer to
+    '''
     @classmethod
     def set_domain_name(cls, entry_point):
         cls.domain_name = urlparse.urlparse(entry_point).hostname
@@ -30,9 +33,12 @@ class Parser(object):
                 self.filter(js, 'src'),
                 self.filter(css, 'href'))
 
+    '''
+    Clean HTML tags, normalize HREF, and remove duplicates from list of links
+    '''
     def filter(self, links, type):
         hrefs = [self.normalize_href(l[type]) for l in links]
-        hrefs = list(set(hrefs))  # remove duplicates
+        hrefs = list(set(hrefs))  # removes duplicates
         return filter(lambda href: href is not None, hrefs)
 
     '''
@@ -43,7 +49,7 @@ class Parser(object):
         if accepted_href:
             normalized_href = urlparse.urljoin(self.url, accepted_href)
 
-            # Handle case where google.com/mydomain.com
+            # exclude google.com/domain-i-am-crawling.com
             uri_object = urlparse.urlparse(normalized_href)
             domain = '{uri.scheme}://{uri.netloc}/'.format(uri=uri_object)
             if (self.domain_name in domain):
