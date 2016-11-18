@@ -9,12 +9,17 @@ class Parser(object):
     ''' Search rules for links and assets to be defined as such '''
     rules = {
                 'next': {
-                    'url':    [['a', 'href']]
+                    'url':    [['a', 'href', True, 'href']]
                 },
                 'assets': {
-                    'images': [['img', 'src']],
-                    'css':    [['link', 'href']],
-                    'js':     [['script', 'src']]
+                    'images': [['img', 'src', True, 'src']],
+                    'css':    [
+                                ['link', 'rel', 'stylesheet', 'href'],
+                                ['link', 'type', 'text/css', 'href'],
+                                ['link', 'rel', 'stylesheet/less', 'href'],
+                                ['link', 'rel', 'stylesheet/css', 'href']
+                              ],
+                    'js':     [['script', 'src', True, 'src']]
                 }
             }
 
@@ -40,8 +45,10 @@ class Parser(object):
             for el_type in self.rules[cat]:
                 results[cat][el_type] = []
                 for rule in self.rules[cat][el_type]:
-                    tags = element.find_all(rule[0], **{rule[1]: True})
-                    results[cat][el_type].extend(self.filter(tags, rule[1]))
+                    tags = element.find_all(rule[0], **{rule[1]: rule[2]})
+                    results[cat][el_type].extend(self.filter(tags, rule[3]))
+                # remove duplicates because of identical rules
+                results[cat][el_type] = list(set(results[cat][el_type]))
         return results
 
     '''
@@ -49,8 +56,7 @@ class Parser(object):
     '''
     def filter(self, tags, type):
         hrefs = [self.normalize_uri(t[type]) for t in tags]
-        hrefs_without_duplicates = list(set(hrefs))
-        return filter(lambda href: href is not None, hrefs_without_duplicates)
+        return filter(lambda href: href is not None, hrefs)
 
     '''
     Normalize urls and keep only those from the current domain

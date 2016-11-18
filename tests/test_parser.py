@@ -20,15 +20,19 @@ class SearchTestSuite(unittest.TestCase):
     def test_search_links_and_assets_using_rules(self):
         page_str = '<script src="portal/wikipedia.org" />\
                     <img src="correct_image_tag" />\
-                    <link href="correct_css_tag" />\
+                    <link href="correct.css" rel="stylesheet/css" />\
+                    <link href="another_correct.css" type="text/css" />\
                     <a href="http://wikipedia.org/next_page" />\
-                    <link src="http://wikipedia.org/ignored_link" />\
+                    <link src="http://wikipedia.org/ignored.css" />\
                     <a href="http://google.com/">Wrong Domain</a>'
 
         res = {
                 'assets': {
+                    'css': [
+                            u'http://wikipedia.org/foo/correct.css',
+                            u'http://wikipedia.org/foo/another_correct.css'
+                           ],
                     'images': [u'http://wikipedia.org/foo/correct_image_tag'],
-                    'css': [u'http://wikipedia.org/foo/correct_css_tag'],
                     'js': [u'http://wikipedia.org/foo/portal/wikipedia.org']
                 },
                 'next': {
@@ -106,7 +110,7 @@ class NormalizeHrefTestSuite(unittest.TestCase):
     def test_same_page(self):
         self.assertEquals(
             self.parser.normalize_uri("/world#"),
-            "http://wikipedia.org/foo/world")
+            "http://wikipedia.org/world")
 
     def test_previous_page(self):
         self.assertEquals(
