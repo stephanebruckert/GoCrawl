@@ -11,7 +11,7 @@ with open('README.md') as f:
 
 setup(
     name='GoCrawl',
-    version='0.0.1',
+    version='0.1.0',
     description='GoCardless\' crawler',
     long_description=readme,
     author='Stephane Bruckert',

@@ -5,6 +5,8 @@ import urlparse
 
 
 class Parser(object):
+
+    ''' Search rules for links and assets to be defined as such '''
     rules = {
                 'next': {
                     'url':    [['a', 'href']]
@@ -13,6 +15,10 @@ class Parser(object):
                     'images': [['img', 'src']],
                     'css':    [['link', 'href']],
                     'js':     [['script', 'src']]
+                    # 'more':  [
+                    #             ['tag', 'src'],
+                    #             ['other', 'href']
+                    #           ]
                 }
             }
 
@@ -73,7 +79,7 @@ class Parser(object):
                 uri.startswith("mailto")):
             try:
                 return uri[:uri.index('#')]  # remove the URL anchor
-            except ValueError, e:
+            except ValueError:
                 return uri
         else:
             False

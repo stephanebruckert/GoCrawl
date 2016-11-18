@@ -2,10 +2,12 @@
 
 import requests
 from pyquery import PyQuery
-import json
 
 
 def stringified_page(url):
+    '''
+    Request a webpage
+    '''
     r = requests.get(url)
 
     if r.status_code == 200:

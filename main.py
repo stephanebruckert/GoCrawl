@@ -4,6 +4,18 @@ import argparse
 from gocrawl.core import core
 
 if __name__ == "__main__":
+    '''
+    $ python main.py -h
+    usage: main.py [-h] -L LINK [--silent] [-W WAIT]
+
+    GoCrawl
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -L LINK, --link LINK  Entry point URL
+      --silent              Silent mode
+      -W WAIT, --wait WAIT  Minimum wait time in seconds between each request
+    '''
     parser = argparse.ArgumentParser(description="GoCrawl")
 
     parser.add_argument('-L', '--link', type=str, required=True,

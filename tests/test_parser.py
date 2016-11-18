@@ -17,7 +17,7 @@ class SearchTestSuite(unittest.TestCase):
     def tearDown(self):
         del self.parser
 
-    def test(self):
+    def test_search_links_and_assets_using_rules(self):
         page_str = '<script src="portal/wikipedia.org" />\
                     <img src="correct_image_tag" />\
                     <link href="correct_css_tag" />\
@@ -81,12 +81,12 @@ class NormalizeHrefTestSuite(unittest.TestCase):
     def tearDown(self):
         del self.parser
 
-    def test_returns_true(self):
+    def test_same_address_returns_true(self):
         self.assertEquals(
             self.parser.normalize_uri("http://wikipedia.org/"),
             "http://wikipedia.org/")
 
-    def test_returns_true_when_subdomain(self):
+    def test_subdomain_returns_true(self):
         self.assertEquals(
             self.parser.normalize_uri("http://fr.wikipedia.org/"),
             "http://fr.wikipedia.org/")
@@ -103,15 +103,16 @@ class NormalizeHrefTestSuite(unittest.TestCase):
         self.assertFalse(
             self.parser.normalize_uri("#"))
 
-    def test_returns_false(self):
+    def test_same_page(self):
         self.assertEquals(
             self.parser.normalize_uri("/world#"),
             "http://wikipedia.org/foo/world")
 
-    def test_returns_false(self):
+    def test_previous_page(self):
         self.assertEquals(
             self.parser.normalize_uri("../hello/world#"),
             "http://wikipedia.org/hello/world")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,3 +3,6 @@ init:
 
 test:
 	nosetests tests
+
+lint:
+	flake8 **/*.py

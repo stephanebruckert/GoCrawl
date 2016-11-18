@@ -1,15 +1,13 @@
 #!/usr/bin/python
 
 import Queue
-import json
 
 
 class Queuer(object):
 
-    # TODO current_url should be instance attribute
-    # TODO all lists should be class attributes
     def __init__(self, entry_point, should_print):
         print 'Crawling %s...' % entry_point
+
         self.unvisited = Queue.Queue()
         self.unvisited.put(entry_point.decode('utf-8'))
         self.visited = []
