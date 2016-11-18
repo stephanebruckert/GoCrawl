@@ -5,16 +5,16 @@ import urlparse
 
 
 class Parser(object):
-    to_search = {
-                    'next': {
-                        'url':    [['a', 'href']]
-                    },
-                    'assets': {
-                        'images': [['img', 'src']],
-                        'css':    [['link', 'href']],
-                        'js':     [['script', 'src']]
-                    }
+    rules = {
+                'next': {
+                    'url':    [['a', 'href']]
+                },
+                'assets': {
+                    'images': [['img', 'src']],
+                    'css':    [['link', 'href']],
+                    'js':     [['script', 'src']]
                 }
+            }
 
     def __init__(self, current_url):
         self.url = current_url
@@ -33,20 +33,20 @@ class Parser(object):
         element = BeautifulSoup(page_str, 'html.parser')
 
         results = {}
-        for cat in self.to_search:
+        for cat in self.rules:
             results[cat] = {}
-            for el_type in self.to_search[cat]:
+            for el_type in self.rules[cat]:
                 results[cat][el_type] = []
-                for rule in self.to_search[cat][el_type]:
-                    result = element.find_all(rule[0], **{rule[1]: True})
-                    results[cat][el_type].extend(self.filter(result, rule[1]))
+                for rule in self.rules[cat][el_type]:
+                    tags = element.find_all(rule[0], **{rule[1]: True})
+                    results[cat][el_type].extend(self.filter(tags, rule[1]))
         return results
 
     '''
     Clean HTML tags, normalize HREF, and remove duplicates from list of links
     '''
-    def filter(self, links, type):
-        hrefs = [self.normalize_href(l[type]) for l in links]
+    def filter(self, tags, type):
+        hrefs = [self.normalize_href(t[type]) for t in tags]
         hrefs_without_duplicates = list(set(hrefs))
         return filter(lambda href: href is not None, hrefs_without_duplicates)
 
@@ -77,5 +77,3 @@ class Parser(object):
                 return href
         else:
             False
-
-# class WebPage(object):

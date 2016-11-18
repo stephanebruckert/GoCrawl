@@ -1,18 +1,18 @@
 #!/usr/bin/python
 
 from queuer import Queuer
-from parse import Parser
+from parser import Parser
 import request
 import report
 
 
-def core(entry_point):
+def core(entry_point, should_print):
     '''
     Loop over pages of the entry point domain
     and retrieve their assets
     '''
     # Initiate with a first link
-    queuer = Queuer(entry_point)
+    queuer = Queuer(entry_point, should_print)
     Parser.set_domain_name(entry_point)
 
     while True:
@@ -21,14 +21,12 @@ def core(entry_point):
             break
         try:
             results = read_page(current_url)
-        except Exception, e:
-            queuer.add_invalid(current_url)
+        except Exception, code:
+            queuer.add_invalid(current_url, code)
             continue
         queuer.add(results, current_url)
 
-    print 'Done.'
     report.output_json(queuer.results)
-    # TODO Save results in file
 
 
 def read_page(url):

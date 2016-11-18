@@ -1,12 +1,48 @@
 # -*- coding: utf-8 -*-
 
-from gocrawl.parse import Parser
+from gocrawl.parser import Parser
 
 import unittest
 
 
+class SearchTestSuite(unittest.TestCase):
+    '''
+    Retrieving any links to pages of the same domain
+    '''
+
+    def setUp(self):
+        self.parser = Parser("http://wikipedia.org/foo/bar")
+        self.parser.set_domain_name("http://wikipedia.org/")
+
+    def tearDown(self):
+        del self.parser
+
+    def test(self):
+        page_str = '<script src="portal/wikipedia.org" />\
+                    <img src="correct_image_tag" />\
+                    <link href="correct_css_tag" />\
+                    <a href="http://wikipedia.org/next_page" />\
+                    <link src="http://wikipedia.org/ignored_link" />\
+                    <a href="http://google.com/">Wrong Domain</a>'
+
+        res = {
+                'assets': {
+                    'images': [u'http://wikipedia.org/foo/correct_image_tag'],
+                    'css': [u'http://wikipedia.org/foo/correct_css_tag'],
+                    'js': [u'http://wikipedia.org/foo/portal/wikipedia.org']
+                },
+                'next': {
+                    'url': [u'http://wikipedia.org/next_page']
+                }
+            }
+
+        self.assertEqual(self.parser.search(page_str), res)
+
+
 class UsefulHrefTestSuite(unittest.TestCase):
-    """Basic test cases."""
+    '''
+    href can be useful, modified to be useful, or lost cause
+    '''
 
     def test_returns_true(self):
         self.assertTrue(
@@ -34,7 +70,9 @@ class UsefulHrefTestSuite(unittest.TestCase):
 
 
 class NormalizeHrefTestSuite(unittest.TestCase):
-    """Basic test cases."""
+    '''
+    Normalize urls and keep only those from the current domain
+    '''
 
     def setUp(self):
         self.parser = Parser("http://wikipedia.org/foo/bar")
