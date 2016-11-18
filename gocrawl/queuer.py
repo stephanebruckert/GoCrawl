@@ -60,8 +60,7 @@ class Queuer(object):
             return
         invalid = 'Invalid: {0}, because {1}'.format(
             str(len(self.invalid)), status_code) if status_code else ''
-
-        print "{0:60} Visited: {1:6} Remaining: {2:8} {3}".format(
+        print u'{0:60} Visited: {1:8} Remaining: {2:7} {3}'.format(
             current_url,
             str(len(self.visited)),
             str(self.unvisited.qsize()),

@@ -15,10 +15,6 @@ class Parser(object):
                     'images': [['img', 'src']],
                     'css':    [['link', 'href']],
                     'js':     [['script', 'src']]
-                    # 'more':  [
-                    #             ['tag', 'src'],
-                    #             ['other', 'href']
-                    #           ]
                 }
             }
 
