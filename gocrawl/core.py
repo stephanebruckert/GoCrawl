@@ -27,10 +27,10 @@ def core(entry_point, should_print, seconds=None):
             queuer.add_invalid(current_url, code)
             continue
         finally:
-            if seconds:
+            if seconds > 0:
                 time.sleep(seconds)
 
-    report.output_json(queuer.results)
+    report.output_json(queuer)
 
 
 def read_page(url):

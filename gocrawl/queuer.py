@@ -58,7 +58,7 @@ class Queuer(object):
     def print_status(self, current_url, status_code=None):
         if not self.should_print:
             return
-        invalid = 'Invalid: {0}, because {1}'.format(
+        invalid = 'Invalid: {0}, reason: {1}'.format(
             str(len(self.invalid)), status_code) if status_code else ''
         print u'{0:60} Visited: {1:8} Remaining: {2:7} {3}'.format(
             current_url,
