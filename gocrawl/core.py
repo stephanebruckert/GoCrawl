@@ -4,9 +4,10 @@ from queuer import Queuer
 from parser import Parser
 import request
 import report
+import time
 
 
-def core(entry_point, should_print):
+def core(entry_point, should_print, seconds=None):
     '''
     Loop over pages of the entry point domain
     and retrieve their assets
@@ -21,10 +22,13 @@ def core(entry_point, should_print):
             break
         try:
             results = read_page(current_url)
+            queuer.add(results, current_url)
         except Exception, code:
             queuer.add_invalid(current_url, code)
             continue
-        queuer.add(results, current_url)
+        finally:
+            if seconds:
+                time.sleep(seconds)
 
     report.output_json(queuer.results)
 

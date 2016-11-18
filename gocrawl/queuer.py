@@ -9,6 +9,7 @@ class Queuer(object):
     # TODO current_url should be instance attribute
     # TODO all lists should be class attributes
     def __init__(self, entry_point, should_print):
+        print 'Crawling %s...' % entry_point
         self.unvisited = Queue.Queue()
         self.unvisited.put(entry_point.decode('utf-8'))
         self.visited = []
@@ -59,8 +60,8 @@ class Queuer(object):
     def print_status(self, current_url, status_code=None):
         if not self.should_print:
             return
-        invalid = 'Invalid: {0:5} {1}'.format(
-            str(len(self.invalid)), status_code) if status_code > 0 else ''
+        invalid = 'Invalid: {0}, because {1}'.format(
+            str(len(self.invalid)), status_code) if status_code else ''
 
         print "{0:60} Visited: {1:6} Remaining: {2:8} {3}".format(
             current_url,

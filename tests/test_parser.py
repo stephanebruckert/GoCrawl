@@ -46,27 +46,27 @@ class UsefulHrefTestSuite(unittest.TestCase):
 
     def test_returns_true(self):
         self.assertTrue(
-            Parser.useful_href("hello"))
+            Parser.useful_uri("hello"))
 
     def test_starts_with_hash_returns_false(self):
         self.assertFalse(
-            Parser.useful_href("#hello"))
+            Parser.useful_uri("#hello"))
 
     def test_remove_hash(self):
         self.assertEquals(
-            Parser.useful_href("hello#"), "hello")
+            Parser.useful_uri("hello#"), "hello")
 
     def test_remove_after_hash(self):
         self.assertEquals(
-            Parser.useful_href("hello#world"), "hello")
+            Parser.useful_uri("hello#world"), "hello")
 
     def test_single_hash_returns_false(self):
         self.assertFalse(
-            Parser.useful_href("#"))
+            Parser.useful_uri("#"))
 
     def test_mail_returns_false(self):
         self.assertFalse(
-            Parser.useful_href("mailto:mail@to.com"))
+            Parser.useful_uri("mailto:mail@to.com"))
 
 
 class NormalizeHrefTestSuite(unittest.TestCase):
@@ -83,34 +83,34 @@ class NormalizeHrefTestSuite(unittest.TestCase):
 
     def test_returns_true(self):
         self.assertEquals(
-            self.parser.normalize_href("http://wikipedia.org/"),
+            self.parser.normalize_uri("http://wikipedia.org/"),
             "http://wikipedia.org/")
 
     def test_returns_true_when_subdomain(self):
         self.assertEquals(
-            self.parser.normalize_href("http://fr.wikipedia.org/"),
+            self.parser.normalize_uri("http://fr.wikipedia.org/"),
             "http://fr.wikipedia.org/")
 
     def test_wrong_domain_returns_false(self):
         self.assertFalse(
-            self.parser.normalize_href("http://google.com"))
+            self.parser.normalize_uri("http://google.com"))
 
     def test_wrong_and_good_domain_returns_false(self):
         self.assertFalse(
-            self.parser.normalize_href("http://google.com/wikipedia.org"))
+            self.parser.normalize_uri("http://google.com/wikipedia.org"))
 
     def test_anchor_returns_false(self):
         self.assertFalse(
-            self.parser.normalize_href("#"))
+            self.parser.normalize_uri("#"))
 
     def test_returns_false(self):
         self.assertEquals(
-            self.parser.normalize_href("/world#"),
+            self.parser.normalize_uri("/world#"),
             "http://wikipedia.org/foo/world")
 
     def test_returns_false(self):
         self.assertEquals(
-            self.parser.normalize_href("../hello/world#"),
+            self.parser.normalize_uri("../hello/world#"),
             "http://wikipedia.org/hello/world")
 
 if __name__ == '__main__':

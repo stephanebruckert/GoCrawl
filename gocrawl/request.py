@@ -6,10 +6,7 @@ import json
 
 
 def stringified_page(url):
-    try:
-        r = requests.get(url)
-    except Exception, e:
-        print
+    r = requests.get(url)
 
     if r.status_code == 200:
         return str(PyQuery(r.text))

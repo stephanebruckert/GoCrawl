@@ -1,32 +1,21 @@
-### install
+# GoCrawl
 
+## How to
 
-#### 1. software needed
+### Prerequisites
 
-    easy_install pip
-    pip install --upgrade pip
-    pip install virtualenv
+    1. `easy_install pip`
+    2. `pip install --upgrade pip`
+    3. `pip install virtualenv`
 
-#### 2. prerequisites
+### Setting up a virtual environment
 
-    virtualenv env
-    pip install -r ./requirements.txt
+    4. `virtualenv env`
+    5. `pip install -r ./requirements.txt`
 
-#### 3. run
-    python main.py
+### Run with options
 
-### options
-
- - TODO options:
- - vertical?/horizontal? - tail/head
- - speed?
- - allow subdomains?
- - display progress?
-
-### choices
-
- - python2.7
- - BeautifulSoup because:
-   - we don't need to be that fast,
-   - saves development time,
-   - more forgiving towards unknown and potentially corrupt source.
+    - `python main.py -h` for help
+    - `python main.py -L http://google.fr`
+    - `python main.py -L http://google.fr --silent`
+    - `python main.py -L http://google.fr --wait 5`

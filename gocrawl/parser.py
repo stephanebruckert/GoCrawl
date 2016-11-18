@@ -27,7 +27,7 @@ class Parser(object):
         cls.domain_name = urlparse.urlparse(entry_point).hostname
 
     '''
-    Retrieving any links to pages of the same domain
+    Search for contents in page according to defined rules
     '''
     def search(self, page_str):
         element = BeautifulSoup(page_str, 'html.parser')
@@ -43,37 +43,37 @@ class Parser(object):
         return results
 
     '''
-    Clean HTML tags, normalize HREF, and remove duplicates from list of links
+    Clean HTML tags, normalize URIs, and remove duplicate links
     '''
     def filter(self, tags, type):
-        hrefs = [self.normalize_href(t[type]) for t in tags]
+        hrefs = [self.normalize_uri(t[type]) for t in tags]
         hrefs_without_duplicates = list(set(hrefs))
         return filter(lambda href: href is not None, hrefs_without_duplicates)
 
     '''
     Normalize urls and keep only those from the current domain
     '''
-    def normalize_href(self, href):
-        accepted_href = self.useful_href(href)
-        if accepted_href:
-            normalized_href = urlparse.urljoin(self.url, accepted_href)
+    def normalize_uri(self, uri):
+        accepted_uri = self.useful_uri(uri)
+        if accepted_uri:
+            normalized_uri = urlparse.urljoin(self.url, accepted_uri)
             # exclude google.com/domain-i-am-crawling.com
-            uri_object = urlparse.urlparse(normalized_href)
+            uri_object = urlparse.urlparse(normalized_uri)
             domain = '{uri.scheme}://{uri.netloc}/'.format(uri=uri_object)
             if (self.domain_name in domain):
-                return normalized_href
+                return normalized_uri
 
     '''
-    href can be useful, modified to be useful, or lost cause
+    URI can be useful, modified to be useful, or lost cause
     '''
     @staticmethod
-    def useful_href(href):
-        if (len(href) > 0 and
-                href[0] != '#' and not
-                href.startswith("mailto")):
+    def useful_uri(uri):
+        if (len(uri) > 0 and
+                uri[0] != '#' and not
+                uri.startswith("mailto")):
             try:
-                return href[:href.index('#')]  # remove the URL anchor
+                return uri[:uri.index('#')]  # remove the URL anchor
             except ValueError, e:
-                return href
+                return uri
         else:
             False
