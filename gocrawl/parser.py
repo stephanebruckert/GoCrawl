@@ -76,12 +76,13 @@ class Parser(object):
     '''
     @staticmethod
     def useful_uri(uri):
-        if (len(uri) > 0 and
-                uri[0] != '#' and not
-                uri.startswith("mailto")):
-            try:
-                return uri[:uri.index('#')]  # remove the URL anchor
-            except ValueError:
-                return uri
-        else:
-            False
+        try:
+            uri.index('@')
+        except ValueError:
+            if (len(uri) > 0 and
+                    uri[0] != '#' and not
+                    uri.startswith("mailto")):
+                try:
+                    return uri[:uri.index('#')]  # remove the URL anchor
+                except ValueError:
+                    return uri

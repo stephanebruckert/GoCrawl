@@ -70,6 +70,10 @@ class UsefulHrefTestSuite(unittest.TestCase):
 
     def test_mail_returns_false(self):
         self.assertFalse(
+            Parser.useful_uri("mymail@domain.com"))
+
+    def test_mailto_returns_false(self):
+        self.assertFalse(
             Parser.useful_uri("mailto:mail@to.com"))
 
 
